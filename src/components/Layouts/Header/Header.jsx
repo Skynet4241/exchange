@@ -12,7 +12,7 @@ import {
   HeaderLogo,
 } from './Header.styled';
 import { getCurrency, setCurrency } from 'redux/currencySlice';
-import axios from 'axios';
+// import axios from 'axios';
 
 export const currencies = [
   {
@@ -38,22 +38,23 @@ export const Header = () => {
     dispatch(setCurrency(e.target.value));
     setCurrentCurrency(e.target.value);
   };
-  const successCallback = async position => {
-    const { coords } = position;
-    const response = await axios.get(
-      `http://api.geonames.org/countryCodeJSON?lat=${coords.latitude}&lng=${coords.longitude}&username=skynet4241`
-    );
-    console.log(response.data.countryCode);
-    const countryCurrency = response.data.countryCode === 'UA' ? 'UAH' : 'USD';
-    dispatch(setCurrency(countryCurrency));
-    setCurrentCurrency(countryCurrency);
-  };
+  // const successCallback = async position => {
+  //   const { coords } = position;
+  //   const response = await axios.get(
+  //     `http://api.geonames.org/countryCodeJSON?lat=${coords.latitude}&lng=${coords.longitude}&username=skynet4241`
+  //   );
 
-  const errorCallback = error => {
-    console.log(error);
-  };
+  //   console.log(response.data.countryCode);
+  //   const countryCurrency = response.data.countryCode === 'UA' ? 'UAH' : 'USD';
+  //   dispatch(setCurrency(countryCurrency));
+  //   setCurrentCurrency(countryCurrency);
+  // };
 
-  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  // const errorCallback = error => {
+  //   console.log(error);
+  // };
+
+  // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 
   return (
     <>
