@@ -5,9 +5,6 @@ import { useFetchExchangesQuery } from 'redux/contactsApi';
 import { currencies } from 'components/Layouts/Header/Header';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   Grid,
   List,
   ListItem,
