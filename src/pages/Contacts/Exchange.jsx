@@ -27,7 +27,7 @@ export const Contacts = () => {
 
   const { data, isSuccess } = useFetchExchangesQuery({
     base: currency,
-    // symbols: `symbols=${filteredCurrencies}`,
+    symbols: `symbols=${filteredCurrencies}`,
   });
 
   return (
