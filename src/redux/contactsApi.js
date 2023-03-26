@@ -18,8 +18,8 @@ export const exchangesApi = createApi({
   // }),
   endpoints: builder => ({
     fetchExchanges: builder.query({
-      query: ({ symbols, base }) => ({
-        url: `latest?symbols=${symbols}&base=${base}`,
+      query: ({ symbols = '', base }) => ({
+        url: `latest?${symbols}&base=${base}`,
         method: 'GET',
         headers: {
           apikey: 'zQIn97tCUkXPH6kQ7gbfgJSFBM4zl24y',

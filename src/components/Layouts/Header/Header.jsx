@@ -2,7 +2,7 @@ import { Box, MenuItem, TextField } from '@mui/material';
 import { PAGE_NAMES } from 'components/Router/path';
 import { useState } from 'react';
 import { Container } from 'utils/Container';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   HeaderStyle,
   HeaderNav,
@@ -11,7 +11,8 @@ import {
   HeaderBlock,
   HeaderLogo,
 } from './Header.styled';
-import { setCurrency } from 'redux/currencySlice';
+import { getCurrency, setCurrency } from 'redux/currencySlice';
+import axios from 'axios';
 
 export const currencies = [
   {
@@ -23,18 +24,36 @@ export const currencies = [
     label: '€ EUR',
   },
   {
-    value: 'UAH',
-    label: '₴ UAH',
+    value: 'PLN',
+    label: 'zł PLN',
   },
+  { value: 'UAH', label: '₴ UAH' },
 ];
-export const Header = () => {
-  const [currentCurrency, setCurrentCurrency] = useState(currencies[0].value);
-  const dispatch = useDispatch();
 
+export const Header = () => {
+  const currency = useSelector(getCurrency);
+  const [currentCurrency, setCurrentCurrency] = useState(currency);
+  const dispatch = useDispatch();
   const handleChange = e => {
     dispatch(setCurrency(e.target.value));
     setCurrentCurrency(e.target.value);
   };
+  const successCallback = async position => {
+    const { coords } = position;
+    const response = await axios.get(
+      `http://api.geonames.org/countryCodeJSON?lat=${coords.latitude}&lng=${coords.longitude}&username=skynet4241`
+    );
+    console.log(response.data.countryCode);
+    const countryCurrency = response.data.countryCode === 'UA' ? 'UAH' : 'USD';
+    dispatch(setCurrency(countryCurrency));
+    setCurrentCurrency(countryCurrency);
+  };
+
+  const errorCallback = error => {
+    console.log(error);
+  };
+
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 
   return (
     <>

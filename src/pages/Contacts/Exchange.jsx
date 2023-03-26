@@ -1,24 +1,24 @@
-import { Container } from '@mui/joy';
-import { useSelector } from 'react-redux';
-import { getCurrency } from 'redux/currencySlice';
-import { useFetchExchangesQuery } from 'redux/contactsApi';
-import { currencies } from 'components/Layouts/Header/Header';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   Grid,
+  Input,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import { currencies } from 'components/Layouts/Header/Header';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useFetchExchangesQuery } from 'redux/contactsApi';
+import { getCurrency } from 'redux/currencySlice';
+import { Block, SectionWrap } from './Contacts.styled';
 import EmailIcon from '@mui/icons-material/CurrencyExchange';
 
-export const Homepage = () => {
+export const Contacts = () => {
+  const [currencyValue, setCurrencyValue] = useState(0);
+
   const currency = useSelector(getCurrency);
   const filteredCurrencies = currencies
     .filter(item => item.value !== currency)
@@ -27,12 +27,20 @@ export const Homepage = () => {
 
   const { data, isSuccess } = useFetchExchangesQuery({
     base: currency,
-    symbols: `symbols=${filteredCurrencies}`,
+    // symbols: `symbols=${filteredCurrencies}`,
   });
 
   return (
     <>
-      <Container>
+      <Block>
+        <SectionWrap>
+          <Input
+            size="md"
+            placeholder={currency}
+            onChange={e => setCurrencyValue(e.target.value)}
+            value={currencyValue === 0 ? '' : currencyValue}
+          />
+        </SectionWrap>
         <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -55,7 +63,7 @@ export const Homepage = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary={item.currency}
-                          secondary={item.value}
+                          secondary={item.value * currencyValue}
                         />
                       </ListItem>
                     ))}
@@ -63,7 +71,7 @@ export const Homepage = () => {
             </Grid>
           </Grid>
         </Box>
-      </Container>
+      </Block>
     </>
   );
 };
